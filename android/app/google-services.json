@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "19310231666",
+    "project_id": "fruit-hub48",
+    "storage_bucket": "fruit-hub48.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19310231666:android:9b1bb248f058b2571802eb",
+        "android_client_info": {
+          "package_name": "com.mahmoudshady.commerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEJkM3JJl70l_5lpkYBDre_GWUirbqjk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

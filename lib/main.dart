@@ -1,16 +1,21 @@
 import 'package:commerce/core/local_db/shared_pref/shared_pref.dart';
 import 'package:commerce/feature/auth_feature/presentation/views/sign_up_view.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'feature/auth_feature/presentation/views/login_view.dart';
 import 'feature/onboarding_feature/presentation/onboarding_view.dart';
 import 'feature/splash_feature/presentation/splash_view.dart';
+import 'firebase_options.dart';
 import 'generated/l10n.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'shared/my_theme/my_theme.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await SharedPref.init();
   runApp(const MyApp());
 }
@@ -26,9 +31,9 @@ class MyApp extends StatelessWidget {
       initialRoute: SplashView.routeName,
       routes: {
         SplashView.routeName: (context) => SplashView(),
-        OnboardingView.routeName:(context)=>OnboardingView(),
-        LoginView.routeName:(context)=>LoginView(),
-        SignUpView.routeName:(context)=>SignUpView(),
+        OnboardingView.routeName: (context) => OnboardingView(),
+        LoginView.routeName: (context) => LoginView(),
+        SignUpView.routeName: (context) => SignUpView(),
       },
       localizationsDelegates: [
         S.delegate,
