@@ -44,6 +44,11 @@ class FireBaseAuthServices {
         email: emailAddress,
         password: password,
       );
+      if (credential.user == null) {
+        log('Auth Services user is null');
+        throw CustomException(
+            message: 'An error occurred. Please try again later.');
+      }
       return credential.user!;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

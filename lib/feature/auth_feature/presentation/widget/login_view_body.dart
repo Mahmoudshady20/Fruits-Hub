@@ -1,3 +1,5 @@
+import 'package:commerce/core/helper_function/validations_regex.dart';
+import 'package:commerce/feature/auth_feature/presentation/manager/signin_cubit/signin_cubit.dart';
 import 'package:commerce/feature/auth_feature/presentation/views/sign_up_view.dart';
 import 'package:commerce/feature/auth_feature/presentation/widget/custom_divider.dart';
 import 'package:commerce/feature/auth_feature/presentation/widget/forget_password.dart';
@@ -7,6 +9,7 @@ import 'package:commerce/generated/assets_images.dart';
 import 'package:commerce/shared/widget/custom_button.dart';
 import 'package:commerce/shared/widget/custom_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -51,6 +54,12 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 textInputType: TextInputType.emailAddress,
                 controller: emailController,
                 validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter your Email';
+                  }
+                  if (!ValidationRegex.emailRegex(value)) {
+                    return 'Please enter Valid Email';
+                  }
                   return null;
                 },
                 hint: 'البريد الإلكتروني',
@@ -62,6 +71,12 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 textInputType: TextInputType.visiblePassword,
                 controller: passwordController,
                 validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter your Password';
+                  }
+                  if (!ValidationRegex.passwordRegex(value)) {
+                    return 'Please enter Valid Password';
+                  }
                   return null;
                 },
                 hint: 'كلمة المرور',
@@ -86,7 +101,14 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 height: 33,
               ),
               CustomButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    await context.read<SigninCubit>().loginWithEmailAndPassword(
+                        emailController.text, passwordController.text);
+                  } else {
+                    return;
+                  }
+                },
                 text: 'تسجيل دخول',
               ),
               SizedBox(
