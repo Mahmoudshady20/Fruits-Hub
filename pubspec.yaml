@@ -45,6 +45,8 @@ dependencies:
   firebase_auth: ^5.3.3
   dartz: ^0.10.1
   get_it: ^8.0.2
+  flutter_bloc: ^8.1.6
+  modal_progress_hud_nsn: ^0.5.1
 
 dev_dependencies:
   flutter_test:

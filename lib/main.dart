@@ -1,5 +1,7 @@
 import 'package:commerce/core/local_db/shared_pref/shared_pref.dart';
+import 'package:commerce/core/services/services_locator/locator_setup.dart';
 import 'package:commerce/feature/auth_feature/presentation/views/sign_up_view.dart';
+import 'package:commerce/feature/home_feature/home_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  setup();
   await SharedPref.init();
   runApp(const MyApp());
 }
@@ -34,6 +37,7 @@ class MyApp extends StatelessWidget {
         OnboardingView.routeName: (context) => OnboardingView(),
         LoginView.routeName: (context) => LoginView(),
         SignUpView.routeName: (context) => SignUpView(),
+        HomeView.routeName: (context) => HomeView(),
       },
       localizationsDelegates: [
         S.delegate,

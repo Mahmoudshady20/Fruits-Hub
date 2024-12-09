@@ -1,43 +1,38 @@
 import 'package:flutter/material.dart';
 
-class RulesSignUp extends StatefulWidget {
-  const RulesSignUp({super.key});
+class RulesSignUp extends StatelessWidget {
+  const RulesSignUp({
+    super.key,
+    required this.checkValue,
+    required this.onChanged,
+  });
 
-  @override
-  State<RulesSignUp> createState() => _RulesSignUpState();
-}
+  final bool checkValue;
+  final void Function(bool?)? onChanged;
 
-class _RulesSignUpState extends State<RulesSignUp> {
-  late bool checkValue;
-  @override
-  void initState() {
-    checkValue = false;
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Checkbox(value: checkValue, onChanged: (value){
-          setState(() {
-            checkValue = value ?? false;
-          });
-        }),
+        Checkbox(
+          value: checkValue,
+          onChanged: onChanged,
+        ),
         Flexible(
           child: Text(
             'من خلال إنشاء حساب ، فإنك توافق على',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Color(0xFF949D9E),
-            ),
+                  color: Color(0xFF949D9E),
+                ),
           ),
         ),
         InkWell(
-          onTap: (){},
+          onTap: () {},
           child: Text(
             ' الشروط والأحكام الخاصة بنا',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Color(0xFF2D9F5D),
-            ),
+                  color: Color(0xFF2D9F5D),
+                ),
           ),
         ),
       ],

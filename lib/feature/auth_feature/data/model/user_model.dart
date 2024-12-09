@@ -7,8 +7,10 @@ class UserModel extends UserEntity {
     required super.email,
     required super.uid,
   });
-  factory UserModel.fromFireBase(User user) {
+  factory UserModel.fromFireBase(
+    User user,
+  ) {
     return UserModel(
-        name: user.displayName!, email: user.email!, uid: user.uid);
+        name: user.displayName ?? '', email: user.email!, uid: user.uid);
   }
 }

@@ -1,7 +1,6 @@
 class UserEntity {
   final String name;
   final String email;
-
   final String uid;
 
   UserEntity({

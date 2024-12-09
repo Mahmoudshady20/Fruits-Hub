@@ -26,10 +26,10 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<Either<Failure, UserEntity>> registerWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password, String name) async {
     try {
       User user = await fireBaseAuthServices.createWithEmailAndPassword(
-          emailAddress: email, password: password);
+          emailAddress: email, password: password, name: name);
       return Right(UserModel.fromFireBase(user));
     } on Exception catch (e) {
       return left(ServerFailure(e.toString()));

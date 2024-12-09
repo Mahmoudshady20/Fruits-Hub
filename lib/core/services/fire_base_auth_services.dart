@@ -1,15 +1,25 @@
+import 'dart:developer';
+
 import 'package:commerce/core/services/custom_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FireBaseAuthServices {
   Future<User> createWithEmailAndPassword(
-      {required String emailAddress, required String password}) async {
+      {required String emailAddress,
+      required String password,
+      required String name}) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
+      if (credential.user == null) {
+        log('Auth Services user is null');
+        throw CustomException(
+            message: 'An error occurred. Please try again later.');
+      }
+      credential.user?.updateDisplayName(name);
       return credential.user!;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

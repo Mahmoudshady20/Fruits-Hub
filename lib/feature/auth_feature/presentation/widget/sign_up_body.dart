@@ -1,8 +1,12 @@
+import 'package:commerce/core/helper_function/validations_regex.dart';
+import 'package:commerce/feature/auth_feature/presentation/manager/signup_cubit/signup_cubit.dart';
 import 'package:commerce/feature/auth_feature/presentation/views/login_view.dart';
 import 'package:commerce/feature/auth_feature/presentation/widget/rules_sign_up.dart';
 import 'package:commerce/feature/auth_feature/presentation/widget/switch_page.dart';
 import 'package:commerce/shared/widget/custom_button.dart';
+import 'package:commerce/shared/widget/error_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/widget/custom_form_field.dart';
 
@@ -23,6 +27,7 @@ class _SignUpBodyState extends State<SignUpBody> {
   late TextEditingController nameController;
 
   late bool isPassword;
+  late bool checkValue;
 
   @override
   void initState() {
@@ -31,6 +36,7 @@ class _SignUpBodyState extends State<SignUpBody> {
     passwordController = TextEditingController();
     nameController = TextEditingController();
     isPassword = true;
+    checkValue = false;
     super.initState();
   }
 
@@ -55,6 +61,9 @@ class _SignUpBodyState extends State<SignUpBody> {
               CustomFormField(
                 controller: nameController,
                 validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter your Name';
+                  }
                   return null;
                 },
                 hint: 'الاسم كامل',
@@ -66,6 +75,12 @@ class _SignUpBodyState extends State<SignUpBody> {
                 textInputType: TextInputType.emailAddress,
                 controller: emailController,
                 validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter your Email';
+                  }
+                  if (!ValidationRegex.emailRegex(value)) {
+                    return 'Please enter Valid Email';
+                  }
                   return null;
                 },
                 hint: 'البريد الإلكتروني',
@@ -77,6 +92,12 @@ class _SignUpBodyState extends State<SignUpBody> {
                 textInputType: TextInputType.visiblePassword,
                 controller: passwordController,
                 validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter your Password';
+                  }
+                  if (!ValidationRegex.passwordRegex(value)) {
+                    return 'Please enter Valid Password';
+                  }
                   return null;
                 },
                 hint: 'كلمة المرور',
@@ -94,12 +115,33 @@ class _SignUpBodyState extends State<SignUpBody> {
               SizedBox(
                 height: 16,
               ),
-              RulesSignUp(),
+              RulesSignUp(
+                checkValue: checkValue,
+                onChanged: (value) {
+                  setState(() {
+                    checkValue = value ?? false;
+                  });
+                },
+              ),
               SizedBox(
                 height: 30,
               ),
               CustomButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    if (checkValue) {
+                      await context
+                          .read<SignupCubit>()
+                          .signUpWithEmailAndPassword(emailController.text,
+                              passwordController.text, nameController.text);
+                    } else {
+                      showErrorBar(
+                          context, 'يجب عليك الموافقة على الشروط والإحكام');
+                    }
+                  } else {
+                    return;
+                  }
+                },
                 text: 'إنشاء حساب جديد',
               ),
               SizedBox(
