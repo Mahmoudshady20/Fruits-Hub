@@ -13,4 +13,19 @@ class UserModel extends UserEntity {
     return UserModel(
         name: user.displayName ?? '', email: user.email!, uid: user.uid);
   }
+  factory UserModel.fromFireStore(Map<String, dynamic> map) {
+    return UserModel(
+      name: map['name'],
+      email: map['email'],
+      uid: map['uid'],
+    );
+  }
+
+  Map<String, dynamic> toFireStore() {
+    return {
+      'name': name,
+      'email': email,
+      'uid': uid,
+    };
+  }
 }
