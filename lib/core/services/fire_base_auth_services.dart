@@ -19,8 +19,11 @@ class FireBaseAuthServices {
         throw CustomException(
             message: 'An error occurred. Please try again later.');
       }
-      credential.user?.updateDisplayName(name);
-      return credential.user!;
+      await credential.user?.updateDisplayName(name);
+      await credential.user!.reload();
+      final updatedUser = FirebaseAuth.instance.currentUser;
+      log(credential.user!.displayName.toString());
+      return updatedUser!;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw CustomException(message: 'The password provided is too weak.');

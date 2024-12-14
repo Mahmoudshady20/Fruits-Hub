@@ -5,7 +5,7 @@ import 'package:commerce/feature/auth_feature/domain/entity/user_entity.dart';
 import 'package:commerce/shared/constants.dart';
 
 class FireBaseFireStoreServices implements DataBaseRepo {
-  CollectionReference<UserModel> getUser() {
+  CollectionReference<UserModel> getUserCollection() {
     return FirebaseFirestore.instance
         .collection(Constants.userCollectionName)
         .withConverter<UserModel>(
@@ -16,25 +16,34 @@ class FireBaseFireStoreServices implements DataBaseRepo {
   }
 
   @override
-  Future<void> addUser(
-      {required Map<String, dynamic> data, required String id}) async {
-    await getUser().doc(id).set(UserModel.fromFireStore(data));
-  }
-
-  @override
   Future<void> deleteUser({required String id}) async {
-    await getUser().doc(id).delete();
+    await getUserCollection().doc(id).delete();
   }
 
   @override
   Future<UserEntity?> getUserData({required String id}) async {
-    final DocumentSnapshot<UserModel> doc = await getUser().doc(id).get();
+    final DocumentSnapshot<UserModel> doc =
+        await getUserCollection().doc(id).get();
     return doc.data();
   }
 
   @override
   Future<void> updateUser(
-      {required Map<String, dynamic> data, required String id}) async {
-    await getUser().doc(id).update(UserModel.fromFireStore(data).toFireStore());
+      {required UserModel userModel, required String id}) async {
+    await getUserCollection().doc(id).update(userModel.toFireStore());
+  }
+
+  @override
+  Future<void> addUser(
+      {required UserModel userModel, required String id}) async {
+    await getUserCollection().doc(id).set(userModel);
+  }
+
+  @override
+  Future<bool> isUserExist({required String id}) async {
+    final DocumentSnapshot<UserModel> documentSnapshot =
+        await getUserCollection().doc(id).get();
+    bool exist = documentSnapshot.exists;
+    return exist;
   }
 }
